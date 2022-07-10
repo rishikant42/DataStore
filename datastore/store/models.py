@@ -1,11 +1,26 @@
 import uuid
 
 from django.db import models
+from django.db.models import JSONField
+
+
+class User(models.Model):
+    uid = models.UUIDField(default=uuid.uuid4, unique=True)
+    name = models.CharField(max_length=1024, null=False, blank=False)
+    email = models.EmailField(unique=True, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'user'
 
 
 class Form(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=220, null=False, blank=False)
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'form'
@@ -18,7 +33,6 @@ class QuestionOption(models.Model):
 
     class Meta:
         db_table = 'questionoption'
-
 
 
 class Question(models.Model):
@@ -71,6 +85,18 @@ class Question(models.Model):
 
     class Meta:
         db_table = 'question'
+
+
+class Response(models.Model):
+    uid = models.UUIDField(default=uuid.uuid4, unique=True)
+    form = models.ForeignKey(Form, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    data = JSONField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'response'
 
 
 # class SingleChoiceQuestion(QuestionBase):
