@@ -68,20 +68,20 @@ class Question(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
 
     # choice-type question sepcific columns
-    options = models.ManyToManyField(QuestionOption)
+    options = models.ManyToManyField(QuestionOption, default=[])
     allow_none_option = models.BooleanField(default=False)
     allow_all_option = models.BooleanField(default=False)
 
     # number-type question specific columns
-    lower_limit = models.FloatField(default=1.0)
-    upper_limit = models.FloatField(default=100.0)
+    lower_limit = models.FloatField(null=True)
+    upper_limit = models.FloatField(null=True)
     allow_decimal = models.BooleanField(default=False)
 
     # date-type question specific columns
-    date_format = models.CharField(max_length=50)
+    date_format = models.CharField(max_length=50, null=True, blank=True)
 
     # time-type question specific columns
-    time_format = models.CharField(max_length=50)
+    time_format = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
         db_table = 'question'
@@ -91,7 +91,7 @@ class Response(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, unique=True)
     form = models.ForeignKey(Form, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    data = JSONField()
+    answers = JSONField()
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
