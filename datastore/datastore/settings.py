@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from os import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -146,6 +147,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
+GOOGLE_SHEET_CLIENT_ID = environ.get('GOOGLE_SHEET_CLIENT_ID', 'default-client-id')
+GOOGLE_SHEET_CLIENT_SECRET = environ.get('GOOGLE_SHEET_CLIENT_SECRET', 'default-client-secret')
 
 # import local settings if exits
 try:

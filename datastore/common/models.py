@@ -15,7 +15,7 @@ class AuthConfig(models.Model):
     )
 
     user_id = models.IntegerField(blank=False, null=True)
-    action_id = models.CharField()
+    action_id = models.CharField(max_length=1024)
     config = models.JSONField()
     is_valid = models.BooleanField(default=False)
     invalid_reason = models.TextField(blank=True)
