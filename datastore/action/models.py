@@ -20,6 +20,7 @@ class Action(models.Model):
     auth_type = models.CharField(
         max_length=50, choices=AUTH_TYPE_CHOICES, default=BASIC,
     )
+    enabled = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'action'
