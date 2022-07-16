@@ -3,6 +3,7 @@ from rest_framework import serializers
 from store.models import (
     User, Form, QuestionOption, Question, Response,
 )
+from store.tasks import process_form_response
 
 
 class QuestionOptionSerializer(serializers.ModelSerializer):
@@ -66,10 +67,16 @@ class ResponseSerializer(serializers.ModelSerializer):
         required=True,
         write_only=True,
     )
+
     def validate(self, attrs):
         attrs['user_id'] = self.instance.user.id if self.instance else attrs.pop('user_uid').id
         attrs['form_id'] = self.instance.form.id if self.instance else attrs.pop('form_uid').id
         return super().validate(attrs)
+
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        process_form_response.delay(instance.id)
+        return instance
 
     class Meta:
         model = Response

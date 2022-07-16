@@ -1,7 +1,7 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 
 from action.models import ActionAuthConfig
-from action.action_config import ActionConfig
+from action.common_utils.action_config import ActionConfig
 
 
 class ActionAuthConfigListView(CreateAPIView):

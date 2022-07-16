@@ -7,9 +7,11 @@ from store.models import Form
 
 
 class GooglesheetAction:
-    def __init__(self, form_id, gsheet_action_id=None):
+    def __init__(self, form_id):
         self.form = Form.objects.get(id=form_id)
-        self.gsheet = GsheetAction.objects.filter(id=gsheet_action_id).first()
+        self.gsheet = GsheetAction.objects.filter(
+            auth_config__form_id=form_id
+        ).first()
         self.creds, _ = google.auth.default()
 
     def create_sheet(self, title):
@@ -46,6 +48,7 @@ class GooglesheetAction:
             gsheet = GsheetAction.objects.creat(
                 sheet_name=self.form.name,
                 sheet_id=sheet_id,
+                auth_config=self.form.actionauthconfig,
             )
 
         response = self.form.response_set.order_by('created_time').last()
