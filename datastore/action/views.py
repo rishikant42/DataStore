@@ -1,14 +1,14 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView
 
 from action.models import ActionAuthConfig
-from action.views_config import ActionAuthConfigViewUtils
+from action.action_config import ActionConfig
 
 
 class ActionAuthConfigListView(CreateAPIView):
     queryset = ActionAuthConfig.objects.all()
 
     def get_serializer_class(self, obj):
-        return ActionAuthConfigViewUtils().get_serializer_class(
+        return ActionConfig().get_serializer_class(
             self.kwargs.get('action_uid')
         )
 
@@ -18,6 +18,6 @@ class ActionAuthConfigDetailView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'uid'
 
     def get_serializer_class(self, obj):
-        return ActionAuthConfigViewUtils().get_serializer_class(
+        return ActionConfig().get_serializer_class(
             self.kwargs.get('action_uid')
         )
