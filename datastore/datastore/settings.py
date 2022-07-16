@@ -157,6 +157,8 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = TIME_ZONE
 
+HOST_URL = environ.get("HOST_URL", 'http://127.0.0.1:8787/')
+
 # import local settings if exits
 try:
     from datastore.local_settings import *
