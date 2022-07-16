@@ -26,25 +26,30 @@ class GsheetAuth(OAuth2):
             logger.error(
                 "Auth Request call failed for "
                 f"user_id={self.auth_config.user_id} "
-                f"integration={config.ID} "
+                f"action={config.ID} "
                 f"status_code={token_res.status_code} "
                 f"response={token_res.text}"
             )
-        else:
-            auth_config.auth_config["access_token"] = token_res.get("access_token")
-            auth_config.auth_config["refresh_token"] = token_res.get("refresh_token")
-            auth_config.auth_config["access_token_expires_at"] = (
-                datetime.utcnow() + timedelta(seconds=token_res.get("expires_in"))
-            ).timestamp()
-            auth_config.auth_config["is_authenticated"] = True
-            auth_config.auth_config["state"] = None
-            auth_config.save(update_fields=["auth_config"])
+            return None
+        auth_config.config = {
+            "access_token": token_res.get("access_token"),
+            "refresh_token": token_res.get("access_token"),
+            "access_token_expires_at": (
+                datetime.utcnow() + timedelta(seconds=token_res.get(
+                    "expires_in"))
+            ).timestamp(),
+            "is_authenticated": True,
+            "state": None,
+        }
+        auth_config.save(update_fields=["config"])
 
     def send_request(self, method, url, payload=None, params=None):
         if not self.auth_config:
-            return {"message": "please create a valid auth_configection and try again!"}
+            return {
+                "message": "please create a valid auth_config and try again!"
+            }
         if (
-            self.auth_config.auth_config["access_token_expires_at"]
+            self.auth_config.config["access_token_expires_at"]
             <= datetime.utcnow().timestamp()
         ):
             self.refresh_token(self.auth_config)
@@ -54,7 +59,7 @@ class GsheetAuth(OAuth2):
             json=payload,
             params=params,
             headers={
-                "Authorization": f'Bearer {self.auth_config.auth_config["access_token"]}'
+                "Authorization": f'Bearer {self.auth_config.config["access_token"]}'
             },
         )
         if not response:
@@ -69,4 +74,6 @@ class GsheetAuth(OAuth2):
         return response
 
     def callback_request(self, authorization_code, auth_state):
-        return self.handle_callback(authorization_code, auth_state, self.auth_config)
+        return self.handle_callback(
+            authorization_code, auth_state, self.auth_config
+        )

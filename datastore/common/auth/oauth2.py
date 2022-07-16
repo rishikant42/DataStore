@@ -42,24 +42,24 @@ class OAuth2:
             code=authorization_code,
         )
 
-    def handle_callback(self, authorization_code, auth_state, conn):
-        if conn.auth_config.get("state") != auth_state:
+    def handle_callback(self, authorization_code, auth_state, auth_config):
+        if auth_config.config.get("state") != auth_state:
             return False
         token_res = self.fetch_token(authorization_code)
-        self.save_auth_config(token_res, conn)
+        self.save_auth_config(token_res, auth_config)
         return True
 
-    def refresh_token(self, conn):
+    def refresh_token(self, auth_config):
         token_res = self.session.refresh_token(
             self.TOKEN_ENDPOINT,
-            refresh_token=conn.auth_config["refresh_token"],
+            refresh_token=auth_config.config["refresh_token"],
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
         )
-        self.save_auth_config(token_res, conn)
+        self.save_auth_config(token_res, auth_config)
 
     @abstractmethod
-    def save_auth_config(self, token_res, conn):
+    def save_auth_config(self, token_res, auth_config):
         raise NotImplementedError("override save_auth_config method to use")
 
     @abstractmethod
