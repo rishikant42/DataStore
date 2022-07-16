@@ -42,3 +42,14 @@ class ActionAuthConfig(models.Model):
 
     class Meta:
         db_table = 'actionauthconfig'
+
+
+class GsheetAction(models.Model):
+    sheet_name = models.CharField(max_length=1024)
+    sheet_id = models.CharField(max_length=1024)
+    auth_config = models.ForeignKey(ActionAuthConfig, on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'googlesheetaction'
