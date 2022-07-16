@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, timedelta
 
 import requests as requests
-from common.auth.oauth2 import OAuth2
+from action.common_utils.oauth2base import OAuth2
 from action.googlesheet import config
 
 logger = logging.getLogger(__name__)

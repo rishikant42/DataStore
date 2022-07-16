@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from store.models import Form
@@ -16,6 +18,7 @@ class Action(models.Model):
         (OAuth2, 'OAuth2'),
     )
 
+    uid = models.UUIDField(default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=1024, null=True, blank=True)
     auth_type = models.CharField(
         max_length=50, choices=AUTH_TYPE_CHOICES, default=BASIC,
@@ -27,6 +30,7 @@ class Action(models.Model):
 
 
 class ActionAuthConfig(models.Model):
+    uid = models.UUIDField(default=uuid.uuid4, unique=True)
     action = models.ForeignKey(Action, on_delete=models.CASCADE, null=True)
     form = models.OneToOneField(Form, on_delete=models.CASCADE, null=True)
     config = models.JSONField()

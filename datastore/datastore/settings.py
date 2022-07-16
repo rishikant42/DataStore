@@ -44,8 +44,6 @@ INSTALLED_APPS = [
 
     # internal apps
     'store.apps.StoreConfig',
-    'core.apps.CoreConfig',
-    'common.apps.CommonConfig',
     'action.apps.ActionConfig',
 ]
 
@@ -149,6 +147,15 @@ REST_FRAMEWORK = {
 
 GOOGLE_SHEET_CLIENT_ID = environ.get('GOOGLE_SHEET_CLIENT_ID', 'default-client-id')
 GOOGLE_SHEET_CLIENT_SECRET = environ.get('GOOGLE_SHEET_CLIENT_SECRET', 'default-client-secret')
+
+# Celery conf
+CELERY_BROKER_URL = environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = environ.get("CELERY_BROKER_URL", "redis://localhost:6379")
+
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
 
 # import local settings if exits
 try:
