@@ -97,15 +97,3 @@ class Response(models.Model):
 
     class Meta:
         db_table = 'response'
-
-
-# class SingleChoiceQuestion(QuestionBase):
-#     form = models.ForeignKey(Form, on_delete=models.CASCADE)
-#     options = models.ManyToManyField(QuestionOption)
-#     allow_none_option = models.BooleanField(default=False)
-#
-#
-# class MultipleChoiceQuestion(QuestionBase):
-#     form = models.ForeignKey(Form, on_delete=models.CASCADE)
-#     options = models.ManyToManyField(QuestionOption)
-#     allow_all_option = models.BooleanField(default=False)

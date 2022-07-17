@@ -1,6 +1,7 @@
 import google.auth
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from django.conf import settings
 
 from action.models import GsheetAction
 from store.models import Form
@@ -12,7 +13,10 @@ class GooglesheetAction:
         self.gsheet = GsheetAction.objects.filter(
             auth_config__form_id=form_id
         ).first()
-        self.creds, _ = google.auth.default()
+        self.creds, _ = google.auth.default(
+            client_id=settings.GOOGLE_SHEET_CLIENT_ID,
+            client_secret=settings.GOOGLE_SHEET_CLIENT_SECRET,
+        )
 
     def create_sheet(self, title):
         try:
