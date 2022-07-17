@@ -1,0 +1,24 @@
+from django.conf import settings
+
+DEBUG = True
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
+
+ALLOWED_HOSTS += ['localhost', '127.0.0.1', ]
+
+INSTALLED_APPS = settings.INSTALLED_APPS
+
+INSTALLED_APPS += [
+    'django_extensions',
+]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'atlan',
+        'USER': 'apple',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': 5432,
+    }
+}
