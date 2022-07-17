@@ -2,6 +2,8 @@
 A platform that allows the user to store multiple types of forms and responses.
 The user can integrate 3rd party platform with the form response.
 
+**NOTE:** The platform design specification can be read here https://github.com/rishikant42/Atlan-DataStore/blob/master/Atlan-datastore-design-spec.pdf
+
 ## DB design
 ![Alt text](./db_design.png?raw=true )
 
