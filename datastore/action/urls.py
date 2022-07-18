@@ -14,4 +14,9 @@ urlpatterns = [
         views.ActionAuthConfigDetailView.as_view(),
         name="action-auth-config-detail"
     ),
+    path(
+        "<uuid:action_uid>/oauth-callback/",
+        views.OAuthCallback.as_view(),
+        name="oauth-callback"
+    ),
 ]

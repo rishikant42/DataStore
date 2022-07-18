@@ -15,7 +15,7 @@ def process_form_response(self, response_id):
     response = Response.objects.get(id=response_id)
     try:
         action = response.form.actionauthconfig.action
-        resp_action = ActionConfig().get_action_class(action.uid)
+        resp_action = ActionConfig(action.uid).get_action_class()
         resp_action(response.form.id).process_action()
     except ActionAuthConfig.DoesNotExist:
         pass
