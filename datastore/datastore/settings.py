@@ -10,8 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import sys
 from pathlib import Path
 from os import environ, path
+
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,20 +86,17 @@ WSGI_APPLICATION = 'datastore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+def _configure_database(env_name):
+    app_name = " ".join(sys.argv)[:50]
+    database = dj_database_url.config(env_name)
+    database["OPTIONS"] = {"sslmode": "allow", "application_name": app_name}
+    database["DISABLE_SERVER_SIDE_CURSORS"] = True
+    return database
+
 DATABASES = {
-    'default': {
-        'NAME': 'db_name',
-        'USER': 'db_user',
-        'PASSWORD': 'db_password',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
-        'CONN_MAX_AGE': 0,
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'OPTIONS': {
-            'sslmode': 'allow',
-        },
-    }
+    "default": _configure_database("DATABASE_URL")
 }
+
 
 
 # Password validation

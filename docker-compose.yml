@@ -12,16 +12,22 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    env_file:
-      - '.env.docker'
+    environment:
+      DATABASE_URL: postgres://admin:password@postgres:5432/datastore_db
+      CELERY_BROKER_URL: redis://redis:6379
+      CELERY_RESULT_BACKEND: redis://redis:6379
+      HOST_URL: http://locahost:8000
   celery_worker:
     build: .
     command: bash -c "celery -A datastore worker -l INFO"
     depends_on:
       redis:
         condition: service_healthy
-    env_file:
-      - '.env.docker'
+    environment:
+      DATABASE_URL: postgres://admin:password@postgres:5432/datastore_db
+      CELERY_BROKER_URL: redis://redis:6379
+      CELERY_RESULT_BACKEND: redis://redis:6379
+      HOST_URL: http://locahost:8000
   tests:
     build: .
     command: bash -c "python manage.py test"
@@ -30,8 +36,11 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    env_file:
-      - '.env.docker'
+    environment:
+      DATABASE_URL: postgres://admin:password@postgres:5432/datastore_db
+      CELERY_BROKER_URL: redis://redis:6379
+      CELERY_RESULT_BACKEND: redis://redis:6379
+      HOST_URL: http://locahost:8000
   postgres:
     image: postgres:11
     environment:
