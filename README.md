@@ -60,6 +60,10 @@ The user can integrate 3rd party platform with the form response.
         ```
         python manage.py migrate
         ```
+    - Run unit tests
+        ```
+        python manage.py test
+        ```
     - Run Django server
         ```
         python manage.py runserver 8000
@@ -78,7 +82,7 @@ The user can integrate 3rd party platform with the form response.
     ```
 
 ### TODO
-- Add unit test cases
+- Add unit test cases. Currently, the codebase has only Form-List-and-Create-APIs testcases.
 - Add API validations
 - The manual testing of Google sheet action. As of now, I have only tested the core logic of the platform. The google sheet integration-specific code is written on top of the core logic but this is not yet tested.
 
